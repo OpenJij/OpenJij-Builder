@@ -1,0 +1,7 @@
+debug = true
+
+[worker.oci]
+  enabled = true
+  snapshotter = "auto"
+  gc = false 
+  max-parallelism = 8
