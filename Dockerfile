@@ -21,9 +21,9 @@ RUN source /opt/intel/oneapi/setvars.sh --force  --config="/tmp/config.txt"
 ENV CC=icx
 ENV CXX=icpx
 ENV FC=ifx
-ENV CFLAGS='-march=skylake-avx512 -mtune=skylake-avx512 -fp-model=fast=2' 
-ENV CXXFLAGS='-march=haswell -mtune=skylake-avx512 -fp-model=fast=2' 
-ENV FFLAGS='-march=haswell -mtune=skylake-avx512 -fp-model=fast=2'
+ENV CFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2' 
+ENV CXXFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2' 
+ENV FFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2'
 
 FROM intel-one-api-configure AS jij-builder
 RUN export
