@@ -28,5 +28,5 @@ ENV FFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2'
 FROM intel-one-api-configure AS test
 RUN export
 
-FROM test AS jij-builder
+FROM test AS openjij-builder
 
