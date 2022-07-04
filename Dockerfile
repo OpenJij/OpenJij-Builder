@@ -9,18 +9,10 @@ RUN \
 
 FROM intel-one-api-config-install AS intel-one-api-configure
 
-RUN . /opt/intel/oneapi/compiler/latest/env/vars.sh 
-RUN . /opt/intel/oneapi/mkl/latest/env/vars.sh
-RUN --mount=type=bind,target=/tmp/config.txt,source=config.txt . /opt/intel/oneapi/setvars.sh --force  --config="/tmp/config.txt"
-ENV CC=icx
-ENV CXX=icpx
-ENV FC=ifx
-ENV CFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2' 
-ENV CXXFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2' 
-ENV FFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2'
+ONBUILD COPY config.txt /tmp/config.txt
 
 FROM intel-one-api-configure AS config-txt
-COPY config.txt /tmp/config.txt
+
 RUN export
 
 FROM config-txt AS eigen3-devel
