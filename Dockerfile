@@ -1,4 +1,4 @@
-FROM --platform=linux/x86_64 quay.io/pypa/manylinux_2_28_x86_64:2022-06-26-9a2ca4b AS manylinux_2_28
+FROM --platform=linux/x86_64 quay.io/pypa/manylinux_2_28_x86_64:latest AS manylinux_2_28
 
 FROM manylinux_2_28 AS intel-one-api-install
 RUN \ 
