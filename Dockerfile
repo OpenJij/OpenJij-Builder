@@ -7,7 +7,7 @@ RUN \
   --mount=type=cache,target=/var/lib/dnf \
   dnf -y install intel-basekit intel-hpckit
 
-FROM intel-one-api-config-install AS intel-one-api-configure
+FROM intel-one-api-install AS intel-one-api-configure
 
 ONBUILD COPY config.txt /tmp/config.txt
 
