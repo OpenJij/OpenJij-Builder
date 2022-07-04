@@ -3,7 +3,6 @@ FROM --platform=linux/x86_64 quay.io/pypa/manylinux_2_28_x86_64:2022-06-26-9a2ca
 FROM manylinux_2_28 AS intel-one-api-install
 RUN --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo dnf -y install intel-basekit intel-hpckit
 
-
 FROM intel-one-api-config-install AS intel-one-api-configure
 
 RUN . /opt/intel/oneapi/compiler/latest/env/vars.sh 
