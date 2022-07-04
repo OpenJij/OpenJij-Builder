@@ -20,7 +20,7 @@ FROM config-txt AS eigen3-devel
 RUN \ 
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
-  dnf config-manager --set-enabled powertools && 
+  dnf config-manager --set-enabled powertools && \
   dnf -y --enablerepo=powertools install eigen3-devel
 
 FROM eigen3-devel AS openjij-builder
