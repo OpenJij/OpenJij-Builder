@@ -34,7 +34,7 @@ jobs:
           tags: |
             type=schedule,enable=true,priority=1000
             type=pep440,pattern={{version}}
-            type=ref,enable=true,priority=0,value=v0.0.0
+            type=raw,enable=true,priority=100,value=0.0.0
     - name: Expose GitHub Runtime
       uses: crazy-max/ghaction-github-runtime@v2
     - name: Env
