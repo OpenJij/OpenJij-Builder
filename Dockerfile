@@ -25,5 +25,8 @@ ENV CFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2'
 ENV CXXFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2' 
 ENV FFLAGS='-march=haswell -mtune=skylake -fp-model=fast=2'
 
-FROM intel-one-api-configure AS jij-builder
+FROM intel-one-api-configure AS test
 RUN export
+
+FROM test AS jij-builder
+
