@@ -34,7 +34,7 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=schedule,enable=true,priority=1000
+            type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
             type=pep440,pattern={{version}}
             type=raw,enable=true,priority=100,value=0.0.0
     - name: Expose GitHub Runtime
@@ -92,7 +92,7 @@ jobs:
           flavor: |
             latest=true
           tags: |
-            type=schedule,enable=true,priority=1000
+            type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
             type=pep440,pattern={{version}}
             type=raw,enable=true,priority=100,value=0.0.0
     - name: Expose GitHub Runtime
@@ -122,6 +122,7 @@ jobs:
       with:
         context: .
         push: true
+        outputs: type=image,push=true,compression=gzip,compression-level=9,force-compression=true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         target: openjij-builder-old
