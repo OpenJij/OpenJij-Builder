@@ -5,7 +5,8 @@ RUN \
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
-  dnf -y install intel-basekit intel-hpckit
+  dnf -y install intel-basekit intel-hpckit && \ 
+  dnf clean all
 
 FROM intel-one-api-install AS intel-one-api-configure
 
@@ -21,7 +22,8 @@ RUN \
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
   dnf config-manager --set-enabled powertools && \
-  dnf -y --enablerepo=powertools install eigen3-devel
+  dnf -y --enablerepo=powertools install eigen3-devel && \ 
+  dnf clean all
 
 FROM eigen3-devel AS openjij-builder
 
@@ -40,7 +42,8 @@ RUN \
   dnf -y install \ 
   intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
   intel-oneapi-compiler-fortran \ 
-  intel-oneapi-mkl
+  intel-oneapi-mkl && \ 
+  dnf clean all
 
 FROM intel-one-api-install-minimum AS intel-one-api-configure-minimum
 
@@ -56,7 +59,8 @@ RUN \
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
   dnf config-manager --set-enabled powertools && \
-  dnf -y --enablerepo=powertools install eigen3-devel
+  dnf -y --enablerepo=powertools install eigen3-devel && \ 
+  dnf clean all
 
 FROM eigen3-devel-minimum AS openjij-builder-minimum
 
