@@ -1,6 +1,13 @@
 FROM --platform=linux/x86_64 quay.io/pypa/manylinux_2_28_x86_64:latest AS manylinux_2_28
 
 FROM manylinux_2_28 AS intel-one-api-install
+
+RUN \ 
+  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
+  --mount=type=cache,target=/var/cache/dnf \
+  --mount=type=cache,target=/var/lib/dnf \
+  dnf -y repository-packages "oneAPI" list --available
+
 RUN \ 
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
   --mount=type=cache,target=/var/cache/dnf \
@@ -28,12 +35,6 @@ RUN \
 FROM eigen3-devel AS openjij-builder
 
 FROM manylinux_2_28 AS intel-one-api-install-minimum
-
-RUN \ 
-  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
-  --mount=type=cache,target=/var/cache/dnf \
-  --mount=type=cache,target=/var/lib/dnf \
-  dnf -y repository-packages "oneAPI" list --available
   
 RUN \ 
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
@@ -54,7 +55,7 @@ ONBUILD COPY config.txt /tmp/config.txt
 
 FROM intel-one-api-configure-minimum AS config-txt-minimum
 
-RUN export
+RUN source /opt/intel/oneapi/setvars.sh --force  --config="/tmp/config.txt"
 
 FROM config-txt-minimum AS eigen3-devel-minimum
 
@@ -66,6 +67,8 @@ RUN \
   dnf -y clean all
 
 FROM eigen3-devel-minimum AS openjij-builder-minimum
+
+RUN export
 
 FROM --platform=linux/x86_64 quay.io/pypa/manylinux2014_x86_64:latest AS manylinux2014
 
