@@ -42,8 +42,6 @@ ONBUILD COPY config.txt /tmp/config.txt
 
 FROM intel-one-api-configure-minimum AS config-txt-minimum
 
-RUN . /opt/intel/oneapi/setvars.sh --force  --config="/tmp/config.txt"
-
 RUN export
 
 FROM config-txt-minimum AS eigen3-devel-minimum
