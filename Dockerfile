@@ -44,7 +44,8 @@ RUN \
   intel-oneapi-compiler-fortran \ 
   intel-oneapi-mkl \ 
   intel-oneapi-mkl-devel \ 
-  intel-oneapi-openmp && \ 
+  intel-oneapi-openmp \ 
+  intel-oneapi-python && \ 
   dnf -y clean all
 
 FROM intel-one-api-install-minimum AS intel-one-api-configure-minimum
