@@ -33,7 +33,7 @@ RUN \
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
-  dnf list available 
+  dnf repository-packages "oneAPI" list --available
   
 RUN \ 
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
