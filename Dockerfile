@@ -26,11 +26,17 @@ RUN \
 FROM eigen3-devel AS openjij-builder
 
 FROM manylinux_2_28 AS intel-one-api-install-minimum
+
 RUN \ 
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
-  dnf --disablerepo="*" --enablerepo="oneAPI" list available \
+  dnf --disablerepo="*" --enablerepo="oneAPI" list available 
+  
+RUN \ 
+  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
+  --mount=type=cache,target=/var/cache/dnf \
+  --mount=type=cache,target=/var/lib/dnf \
   dnf -y install \ 
   intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
   intel-oneapi-compiler-fortran \ 
