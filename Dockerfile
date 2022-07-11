@@ -42,7 +42,8 @@ RUN \
   dnf -y install \ 
   intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
   intel-oneapi-compiler-fortran \ 
-  intel-oneapi-mkl && \ 
+  intel-oneapi-mkl \ 
+  intel-oneapi-mkl-devel && \ 
   dnf -y clean all
 
 FROM intel-one-api-install-minimum AS intel-one-api-configure-minimum
