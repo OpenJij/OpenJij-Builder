@@ -30,16 +30,17 @@ RUN \
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
   --mount=type=cache,target=/var/cache/dnf \
   --mount=type=cache,target=/var/lib/dnf \
+  dnf --disablerepo="*" --enablerepo="oneAPI" list available \
   dnf -y install \ 
   intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
   intel-oneapi-compiler-fortran \ 
   intel-oneapi-mkl
 
-FROM intel-one-api-install-minimum AS intel-one-api-configure-m 
+FROM intel-one-api-install-minimum AS intel-one-api-configure-minimum
 
 ONBUILD COPY config.txt /tmp/config.txt
 
-FROM intel-one-api-configure-minimum AS config-txt- 
+FROM intel-one-api-configure-minimum AS config-txt-minimum
 
 RUN export
 
