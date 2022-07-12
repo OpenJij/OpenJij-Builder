@@ -58,8 +58,6 @@ ONBUILD COPY config.txt /tmp/config.txt
 
 FROM intel-one-api-configure-minimum AS config-txt-minimum
 
-RUN . /opt/intel/oneapi/setvars.sh --force  --config="/tmp/config.txt"
-
 FROM config-txt-minimum AS eigen3-devel-minimum
 
 RUN \ 
@@ -71,8 +69,7 @@ RUN \
 
 FROM eigen3-devel-minimum AS openjij-builder-minimum
 
-RUN export
-
+#古いバージョン
 FROM --platform=linux/x86_64 quay.io/pypa/manylinux2014_x86_64:latest AS manylinux2014
 
 FROM manylinux2014 AS intel-one-api-install-old
@@ -105,7 +102,12 @@ RUN \
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
   --mount=type=cache,target=/var/cache/yum \
   --mount=type=cache,target=/var/lib/yum \
-  yum -y install intel-basekit intel-hpckit
+  yum -y install \
+  intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
+  intel-oneapi-compiler-fortran \ 
+  intel-oneapi-mkl \ 
+  intel-oneapi-mkl-devel \ 
+  intel-oneapi-openmp
 
 FROM intel-one-api-install-old-minimum AS intel-one-api-configure-old-minimum
 
