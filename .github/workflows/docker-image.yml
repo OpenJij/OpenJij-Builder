@@ -59,12 +59,15 @@ jobs:
           echo "Status:    ${{ steps.buildx.outputs.status }}"
           echo "Flags:     ${{ steps.buildx.outputs.flags }}"
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
+    - name: docker image prune --force
+      run: |
+          docker image prune --force
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
         context: .
         push: true
-        outputs: type=image,push=true,compression=uncompressed
+        outputs: type=image,push=true,compression=gzip,compression-level=9
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         target: openjij-builder
@@ -108,6 +111,9 @@ jobs:
         buildkitd-flags: --debug
         config: .github/buildkitd.toml
         install: true
+    - name: docker image prune --force
+      run: |
+          docker image prune --force
     - name: Inspect builder
       run: |
           echo "Name:      ${{ steps.buildx.outputs.name }}"
@@ -120,7 +126,7 @@ jobs:
       with:
         context: .
         push: true
-        outputs: type=image,push=true,compression=uncompressed
+        outputs: type=image,push=true,compression=gzip,compression-level=9
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         target: openjij-builder-old       
