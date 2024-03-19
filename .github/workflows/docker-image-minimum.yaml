@@ -37,6 +37,7 @@ jobs:
             type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
             type=raw,pattern={{version}},value={{date 'YYYYMMDD-HHmmss'}}
             type=sha
+            type=pep440,pattern={{version}}
     - name: Expose GitHub Runtime
       uses: crazy-max/ghaction-github-runtime@v3
     - name: Env
@@ -98,6 +99,7 @@ jobs:
             type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
             type=raw,pattern={{version}},value={{date 'YYYYMMDD-HHmmss'}}
             type=sha
+            type=pep440,pattern={{version}}
     - name: Expose GitHub Runtime
       uses: crazy-max/ghaction-github-runtime@v3
     - name: Env
