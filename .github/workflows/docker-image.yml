@@ -67,8 +67,7 @@ jobs:
       with:
         context: .
         push: true
-        sbom: true
-        outputs: type=image,push=true,compression=gzip,compression-level=9
+        outputs: type=image,push=true,compression=gzip
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
@@ -128,8 +127,7 @@ jobs:
       with:
         context: .
         push: true
-        sbom: true
-        outputs: type=image,push=true,compression=gzip,compression-level=9
+        outputs: type=image,push=true,compression=gzip
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
