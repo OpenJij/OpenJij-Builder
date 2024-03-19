@@ -35,8 +35,8 @@ jobs:
             latest=true
           tags: |
             type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
-            type=pep440,pattern={{version}}
-            type=raw,enable=true,priority=100,value=0.0.0
+            type=raw,pattern={{version}},value={{date 'YYYYMMDD-HHmmss'}}
+            type=sha
     - name: Expose GitHub Runtime
       uses: crazy-max/ghaction-github-runtime@v3
     - name: Env
@@ -69,6 +69,7 @@ jobs:
         outputs: type=image,push=true,compression=uncompressed
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        annotations: ${{ steps.meta.outputs.annotations }}
         target: openjij-builder-minimum
         cache-from: type=gha
         cache-to: type=gha,mode=max      
@@ -95,8 +96,8 @@ jobs:
             latest=true
           tags: |
             type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
-            type=pep440,pattern={{version}}
-            type=raw,enable=true,priority=100,value=0.0.0
+            type=raw,pattern={{version}},value={{date 'YYYYMMDD-HHmmss'}}
+            type=sha
     - name: Expose GitHub Runtime
       uses: crazy-max/ghaction-github-runtime@v3
     - name: Env
@@ -129,6 +130,7 @@ jobs:
         outputs: type=image,push=true,compression=uncompressed
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        annotations: ${{ steps.meta.outputs.annotations }}
         target: openjij-builder-old-minimum
         cache-from: type=gha
         cache-to: type=gha,mode=max 
