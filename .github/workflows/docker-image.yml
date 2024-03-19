@@ -64,13 +64,10 @@ jobs:
       with:
         context: .
         push: true
-        outputs: type=image,push=true,compression=gzip,compression-level=9,force-compression=true
+        outputs: type=image,push=true,compression=uncompressed
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         target: openjij-builder
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        
         
   build-and-push-image-minimum:
     runs-on: ubuntu-latest
@@ -182,12 +179,10 @@ jobs:
       with:
         context: .
         push: true
-        outputs: type=image,push=true,compression=gzip,compression-level=9,force-compression=true
+        outputs: type=image,push=true,compression=uncompressed
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        target: openjij-builder-old
-        cache-from: type=gha
-        cache-to: type=gha,mode=max       
+        target: openjij-builder-old       
         
   build-and-push-image-old-minimum:
     runs-on: ubuntu-latest
