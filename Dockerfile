@@ -1,47 +1,30 @@
 FROM --platform=linux/x86_64 quay.io/pypa/manylinux_2_28_x86_64:latest AS manylinux_2_28
-
-FROM manylinux_2_28 AS intel-one-api-install
-
+COPY config.txt /tmp/config.txt
 RUN \ 
-  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
-  --mount=type=cache,target=/var/cache/dnf \
-  --mount=type=cache,target=/var/lib/dnf \
-  dnf -y repository-packages "oneAPI" list --available
-
-RUN \ 
-  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
-  --mount=type=cache,target=/var/cache/dnf \
-  --mount=type=cache,target=/var/lib/dnf \
-  dnf -y install intel-basekit intel-hpckit && \ 
-  dnf -y clean all
-
-FROM intel-one-api-install AS intel-one-api-configure
-
-ONBUILD COPY config.txt /tmp/config.txt
-
-FROM intel-one-api-configure AS config-txt
-
-RUN export
-
-FROM config-txt AS eigen3-devel
-
-RUN \ 
-  --mount=type=cache,target=/var/cache/dnf \
-  --mount=type=cache,target=/var/lib/dnf \
+  --mount=type=tmpfs,target=/var/cache/dnf \
+  --mount=type=tmpfs,target=/var/lib/dnf \
   dnf config-manager --set-enabled powertools && \
   dnf -y --enablerepo=powertools install eigen3-devel && \ 
   dnf -y clean all
 
-FROM eigen3-devel AS openjij-builder
+#全部入り
+
+FROM manylinux_2_28 AS openjij-builder
+RUN \ 
+  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
+  --mount=type=tmpfs,target=/var/cache/dnf \
+  --mount=type=tmpfs,target=/var/lib/dnf \
+  dnf -y repository-packages "oneAPI" list --available && \
+  dnf -y install intel-basekit intel-hpckit && \ 
+  dnf -y clean all
 
 #軽量バージョン
 
-FROM manylinux_2_28 AS intel-one-api-install-minimum
-  
+FROM manylinux_2_28 AS openjij-builder-minimum 
 RUN \ 
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
-  --mount=type=cache,target=/var/cache/dnf \
-  --mount=type=cache,target=/var/lib/dnf \
+  --mount=type=tmpfs,target=/var/cache/dnf \
+  --mount=type=tmpfs,target=/var/lib/dnf \
   dnf -y install \ 
   intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
   intel-oneapi-compiler-fortran \ 
@@ -49,79 +32,34 @@ RUN \
   intel-oneapi-mkl-devel \ 
   intel-oneapi-openmp && \ 
   dnf -y clean all
-  
-# intel-oneapi-python
-
-FROM intel-one-api-install-minimum AS intel-one-api-configure-minimum
-
-ONBUILD COPY config.txt /tmp/config.txt
-
-FROM intel-one-api-configure-minimum AS config-txt-minimum
-
-FROM config-txt-minimum AS eigen3-devel-minimum
-
-RUN \ 
-  --mount=type=cache,target=/var/cache/dnf \
-  --mount=type=cache,target=/var/lib/dnf \
-  dnf config-manager --set-enabled powertools && \
-  dnf -y --enablerepo=powertools install eigen3-devel && \ 
-  dnf -y clean all
-
-FROM eigen3-devel-minimum AS openjij-builder-minimum
 
 #古いバージョン
 FROM --platform=linux/x86_64 quay.io/pypa/manylinux2014_x86_64:latest AS manylinux2014
-
-FROM manylinux2014 AS intel-one-api-install-old
+COPY config.txt /tmp/config.txt
 RUN \ 
-  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
-  --mount=type=cache,target=/var/cache/yum \
-  --mount=type=cache,target=/var/lib/yum \
-  yum -y install intel-basekit intel-hpckit
-
-FROM intel-one-api-install-old AS intel-one-api-configure-old
-
-ONBUILD COPY config.txt /tmp/config.txt
-
-FROM intel-one-api-configure-old AS config-txt-old
-
-RUN export
-
-FROM config-txt-old AS eigen3-devel-old
-
-RUN \ 
-  --mount=type=cache,target=/var/cache/yum \
-  --mount=type=cache,target=/var/lib/yum \
+  --mount=type=tmpfs,target=/var/cache/yum \
+  --mount=type=tmpfs,target=/var/lib/yum \
   yum -y install eigen3-devel
 
-FROM eigen3-devel-old AS openjij-builder-old
+#全部入り
 
-#軽量バージョン
-FROM manylinux2014 AS intel-one-api-install-old-minimum
+FROM manylinux2014 AS openjij-builder-old
 RUN \ 
   --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
-  --mount=type=cache,target=/var/cache/yum \
-  --mount=type=cache,target=/var/lib/yum \
+  --mount=type=tmpfs,target=/var/cache/yum \
+  --mount=type=tmpfs,target=/var/lib/yum \
+  yum -y install intel-basekit intel-hpckit
+
+#軽量バージョン
+
+FROM manylinux2014 AS openjij-builder-old-minimum
+RUN \ 
+  --mount=type=bind,target=/etc/yum.repos.d/oneAPI.repo,source=oneAPI.repo \ 
+  --mount=type=tmpfs,target=/var/cache/yum \
+  --mount=type=tmpfs,target=/var/lib/yum \
   yum -y install \
   intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic \ 
   intel-oneapi-compiler-fortran \ 
   intel-oneapi-mkl \ 
   intel-oneapi-mkl-devel \ 
   intel-oneapi-openmp
-
-FROM intel-one-api-install-old-minimum AS intel-one-api-configure-old-minimum
-
-ONBUILD COPY config.txt /tmp/config.txt
-
-FROM intel-one-api-configure-old-minimum AS config-txt-old-minimum
-
-RUN export
-
-FROM config-txt-old-minimum AS eigen3-devel-old-minimum
-
-RUN \ 
-  --mount=type=cache,target=/var/cache/yum \
-  --mount=type=cache,target=/var/lib/yum \
-  yum -y install eigen3-devel
-
-FROM eigen3-devel-old-minimum AS openjij-builder-old-minimum
