@@ -37,11 +37,6 @@ jobs:
             type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
             type=raw,pattern={{version}},value={{date 'YYYYMMDD-HHmmss'}}
             type=sha
-    - name: Expose GitHub Runtime
-      uses: crazy-max/ghaction-github-runtime@v3
-    - name: Env
-      run: |
-          env|sort 
     - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v3
@@ -67,11 +62,13 @@ jobs:
       with:
         context: .
         push: true
-        outputs: type=image,push=true,compression=gzip
+        outputs: type=image,push=true,compression=estargz
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
         target: openjij-builder
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         
   build-and-push-image-old:
     runs-on: ubuntu-latest
@@ -97,11 +94,6 @@ jobs:
             type=schedule,pattern={{date 'YYYYMMDD'}},enable=true,priority=1000
             type=raw,pattern={{version}},value={{date 'YYYYMMDD-HHmmss'}}
             type=sha
-    - name: Expose GitHub Runtime
-      uses: crazy-max/ghaction-github-runtime@v3
-    - name: Env
-      run: |
-          env|sort 
     - name: Set up Docker Buildx
       id: buildx
       uses: docker/setup-buildx-action@v3
@@ -127,9 +119,11 @@ jobs:
       with:
         context: .
         push: true
-        outputs: type=image,push=true,compression=gzip
+        outputs: type=image,push=true,compression=estargz
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
-        target: openjij-builder-old       
+        target: openjij-builder-old
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         
