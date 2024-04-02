@@ -37,7 +37,7 @@ jobs:
           mkdir page
           pandoc -f markdown -t html README.md > ./page/index.html
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
